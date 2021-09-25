@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<body>
+<h1 class=cyber>CyberPhoto</h1>
+
+<main id="main">
+  <div id="photo">
+  </div>
+  <div class=text>
+    <div id=text1 class=cyber>Cyber</div>
+    <div id=text2 class=cyber>Friday</div>
+  </div>
+</main>
+
+<script type="module">
+import { waitDropFiles } from "https://js.sabae.cc/waitDropFiles.js";
+import { waitImageFileRead } from "https://js.sabae.cc/waitImageFileRead.js";
+import { assert } from "https://js.sabae.cc/assert.js";
+
+onload = async () => {
+  for (;;) {
+    try {
+      const files = await waitDropFiles(document.body);
+      assert(files.length == 1, "ファイルは1つだけ");
+      const file = files[0];
+      assert(file.type.startsWith("image/"), "画像ファイルじゃないよ");
+      const img = await waitImageFileRead(file.file);
+      photo.innerHTML = "";
+      photo.appendChild(img);
+      main.onclick = () => main.requestFullscreen();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+};
+</script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500&display=swap" rel="stylesheet">
+<style>
+body {
+  height: 100vh;
+  background-color: black;
+  text-align: center;
+  box-sizing: border-box;
+}
+main {
+  display: block;
+  padding: 10px;
+  margin: 10px;
+  background-color: #f1f1f1;
+  x-background-color: #333;
+  position: relative;
+}
+main img {
+  width: 100%;
+}
+#photo {
+  min-height: 70vh;
+  position: relative;
+}
+.cyber {
+  --neon-text-color: #480;
+  font-family: 'Comfortaa', cursive;
+  font-weight: 200;
+  font-style: italic;
+  color: #fff;
+  overflow: hidden;
+  padding: 4rem 6rem 5.5rem;
+  text-shadow:
+            -0.2rem -0.2rem 1rem #fff,
+            0.2rem 0.2rem 1rem #fff,
+            0 0 2rem var(--neon-text-color),
+            0 0 4rem var(--neon-text-color),
+            0 0 6rem var(--neon-text-color),
+            0 0 8rem var(--neon-text-color),
+            0 0 10rem var(--neon-text-color);
+}
+.text {
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 90vw;
+  user-select: none;
+}
+#text1, #text2 {
+  position: absolute;
+  font-size: 5vw;
+  white-space: nowap;
+  transform: rotateZ(-30deg);
+}
+#text1 {
+  top: 1vw;
+  left: -5vw;
+}
+#text2 {
+  top: 3vw;
+  left: 2vw;
+}
+a {
+  color: gray !important;
+}
+</style>
+
+<a href=https://github.com/code4fukui/cyber-photo/>cyber-photo src on GitHub</a>
+</body>
+</html>
