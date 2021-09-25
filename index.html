@@ -1,9 +1,11 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>CyberPhoto</title>
 <body>
-<h1 class=cyber>CyberPhoto</h1>
 
+<h1 class=cyber>CyberPhoto</h1>
 <main id="main">
   <div id="photo">
+    drop an image file here
   </div>
   <div class=text>
     <div id=text1 class=cyber>Cyber</div>
@@ -17,6 +19,7 @@ import { waitImageFileRead } from "https://js.sabae.cc/waitImageFileRead.js";
 import { assert } from "https://js.sabae.cc/assert.js";
 
 onload = async () => {
+  main.onclick = () => main.requestFullscreen();
   for (;;) {
     try {
       const files = await waitDropFiles(document.body);
@@ -26,7 +29,6 @@ onload = async () => {
       const img = await waitImageFileRead(file.file);
       photo.innerHTML = "";
       photo.appendChild(img);
-      main.onclick = () => main.requestFullscreen();
     } catch (e) {
       console.log(e);
     }
@@ -50,6 +52,7 @@ main {
   background-color: #f1f1f1;
   x-background-color: #333;
   position: relative;
+  overflow: hidden;
 }
 main img {
   width: 100%;
