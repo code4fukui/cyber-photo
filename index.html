@@ -4,31 +4,74 @@
 
 <h1 class=cyber>CyberPhoto</h1>
 <main id="main">
-  <div id="photo">
-    drop an image file here
+  drop an image file(s) here
+  <!--
+  <div class="photo">
+    <img src="IMG_4318.jpg">
+    <div class=text>
+      <div class="cyber text1">Cyber</div>
+      <div class="cyber text2">Friday</div>
+    </div>
   </div>
-  <div class=text>
-    <div id=text1 class=cyber>Cyber</div>
-    <div id=text2 class=cyber>Friday</div>
+
+  <div class="photo">
+    <img src="IMG_4319.jpg">
+    <div class=text>
+      <div class="cyber text1">Cyber</div>
+      <div class="cyber text2">Friday</div>
+    </div>
   </div>
+  -->
 </main>
 
 <script type="module">
 import { waitDropFiles } from "https://js.sabae.cc/waitDropFiles.js";
 import { waitImageFileRead } from "https://js.sabae.cc/waitImageFileRead.js";
 import { assert } from "https://js.sabae.cc/assert.js";
+import { html2image } from "https://taisukef.github.io/html2canvas/es/html2image.js";
+import { Canvas } from "https://code4fukui.github.io/Canvas/Canvas.js";
+import { downloadFile } from "https://js.sabae.cc/downloadFile.js";
+import { downloadZip } from "https://code4sabae.github.io/js/downloadZip.js";
 
 onload = async () => {
   main.onclick = () => main.requestFullscreen();
   for (;;) {
     try {
       const files = await waitDropFiles(document.body);
-      assert(files.length == 1, "ファイルは1つだけ");
-      const file = files[0];
-      assert(file.type.startsWith("image/"), "画像ファイルじゃないよ");
-      const img = await waitImageFileRead(file.file);
-      photo.innerHTML = "";
-      photo.appendChild(img);
+      main.innerHTML = "";
+      const dsts = [];
+      for (const file of files) {
+        if (!file.type.startsWith("image/")) {
+          continue; // 画像ファイルじゃないよ
+        }
+        const f = file.file;
+        const img = await waitImageFileRead(f);
+        
+        const div = (cname, parent) => {
+          const c = document.createElement("div");
+          parent.appendChild(c);
+          c.className = cname;
+          return c;
+        };
+
+        const photo = div("photo", main);
+        const txt = div("text", photo);
+        div("cyber text1", txt).textContent = "Cyber";
+        div("cyber text2", txt).textContent = "Friday";
+        photo.appendChild(img);
+
+        const [sx, sy] = [window.scrollX, window.scrollY];
+        window.scrollTo(0, 0); // html2canvas bug??
+        const jpg = Canvas.encodeJPEG(await html2image(photo));
+        //window.scrollTo(sx, sy); // html2canvas bug??
+
+        dsts.push({ name: f.name, data: jpg });
+      }
+      if (dsts.length == 1) {
+          downloadFile(dsts[0].name, dsts[0].data);
+      } else {
+          downloadZip("cyberphoto.zip", dsts);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -47,19 +90,21 @@ body {
 }
 main {
   display: block;
-  padding: 10px;
-  margin: 10px;
-  background-color: #f1f1f1;
-  x-background-color: #333;
-  position: relative;
-  overflow: hidden;
+  min-height: 70vh;
+  color: white;
 }
 main img {
   width: 100%;
+  vertical-align: bottom;
 }
-#photo {
-  min-height: 70vh;
+.photo {
+  x-padding: 10px;
+  margin: 10px;
+  x-background-color: #f8f8f8;
+  x-background-color: #333;
+  background-color: red;
   position: relative;
+  overflow: hidden;
 }
 .cyber {
   --neon-text-color: #480;
@@ -84,20 +129,20 @@ main img {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 90vw;
+  height: 40vw;
   user-select: none;
 }
-#text1, #text2 {
+.text1, .text2 {
   position: absolute;
   font-size: 5vw;
   white-space: nowap;
   transform: rotateZ(-30deg);
 }
-#text1 {
+.text1 {
   top: 1vw;
   left: -5vw;
 }
-#text2 {
+.text2 {
   top: 3vw;
   left: 2vw;
 }
