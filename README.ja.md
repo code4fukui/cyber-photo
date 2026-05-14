@@ -2,7 +2,7 @@
 
 写真にネオン調の「Cyber Friday」テキストを重ね合わせるシンプルなWebツールです。
 
-![cyber-photoのデモ。夜の街の画像にネオングリーンの「Cyber Friday」テキストオーバーレイが表示されています。](https://code4fukui.github.io/cyber-photo/cyber-photo.png)
+![cyber-photoのデモ。夜の街の画像にネオングリーンの「Cyber Friday」テキストオーバーレイが表示されています。](https://github.com/code4fukui/cyber-photo)
 
 ## デモ
 

@@ -5,7 +5,7 @@
 A simple web tool to apply a neon "Cyber Friday" text overlay to your photos.
 
 
-![cyber-photo demo showing an image of a city at night with a neon green "Cyber Friday" text overlay.](https://code4fukui.github.io/cyber-photo/cyber-photo.png)
+![cyber-photo demo showing an image of a city at night with a neon green "Cyber Friday" text overlay.](https://github.com/code4fukui/cyber-photo)
 
 
 ## Demo
